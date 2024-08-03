@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import logo from '../logo.png'
 
-class Menu extends Component{
+class Rendering extends Component{
   render(){
     const { create, add,  remove } = this.props;
     return(
@@ -24,4 +24,4 @@ class Menu extends Component{
     );
   }
 }
-export default Menu;
+export default Rendering;

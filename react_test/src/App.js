@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import './App.css';
-import Menu from './components/Menu';
+import Rendering from './components/Rendering';
 import Row from './components/Row';
 import buildData from './dummyData';
+import Animation from './components/Animation';
+
+// Higher-order component to provide navigation
+function withNavigation(Component) {
+  return function WrappedComponent(props) {
+    const navigate = useNavigate();
+    return <Component {...props} navigate={navigate} />;
+  };
+}
 
 class App extends Component {
-
   state = {
-    data:[],
+    data: [],
   }
 
   create = (amount) => {
@@ -22,25 +31,47 @@ class App extends Component {
     this.setState({ data: [] });
   }
 
-
   render() {
+    const { navigate } = this.props;
+
     return (
-      <div className="App">
-        <Menu
-          create={this.create}
-          add={this.add}
-          remove={this.remove}
-        />
-
-        <table className="data-table"><tbody>
-          {this.state.data.map((item, i) => (
-            <Row key={i} item={item} ></Row>
-          ))}
-        </tbody></table>
-
+      <div>
+        <nav>
+          <button onClick={() => navigate('/')}>Rendering</button>
+          <button onClick={() => navigate('/animation')}>Animation</button>
+        </nav>
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Rendering
+                create={this.create}
+                add={this.add}
+                remove={this.remove}
+              />
+              <table className="data-table">
+                <tbody>
+                  {this.state.data.map((item, i) => (
+                    <Row key={i} item={item}></Row>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          } />
+          <Route path="/animation" element={<Animation />} />
+        </Routes>
       </div>
     );
   }
 }
 
-export default App;
+const AppWithNavigation = withNavigation(App);
+
+function AppWrapper() {
+  return (
+    <Router>
+      <AppWithNavigation />
+    </Router>
+  );
+}
+
+export default AppWrapper;

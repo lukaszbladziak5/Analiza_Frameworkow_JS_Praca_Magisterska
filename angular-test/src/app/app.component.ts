@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import buildData from '../dummyData';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,29 +7,16 @@ import buildData from '../dummyData';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  numberOfRows: number = 0;
-  data: object[];
-  add: number =  0;
-  create: number =  0;
 
 
-  onAdd($event: number){
-    this.numberOfRows = this.numberOfRows + $event;
-    if (this.data === undefined) {
-      this.data = buildData($event)
-    } else {
-      let data = this.data;
-      this.data = data.concat(buildData($event))
-    }
+  constructor(private router: Router) {}
+
+  navigateToRendering() {
+    this.router.navigate(['/rendering']);
   }
 
-  onCreate($event: number){
-    this.numberOfRows = $event;
-    this.data = buildData(this.numberOfRows)
+  navigateToAnimation() {
+    this.router.navigate(['/animation']);
   }
-
-  onRemove(){
-    this.numberOfRows = 0;
-    this.data = [];
-  }
+  
 }
