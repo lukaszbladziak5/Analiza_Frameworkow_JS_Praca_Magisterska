@@ -1,0 +1,18 @@
+
+<div id="app">
+  <app-menu
+    (addEvent)="onAdd($event)"
+    (createEvent)="onCreate($event)"
+    (removeEvent)="onRemove()"
+  ></app-menu>
+
+  <table class="data-table">
+    <tbody>
+      <app-row
+        *ngFor="let row of data"
+        [id]="row.id"
+        [label]="row.label"
+      ></app-row>
+    </tbody>
+  </table>
+</div>
