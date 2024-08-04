@@ -1,2 +1,9 @@
 <!-- src/app/animation/animation.component.html -->
-<div id="square" class="square"></div>
+<div class="container">
+    <div *ngFor="let square of squares" class="square"></div>
+    <div class="button-container">
+      <button class="start-button" (click)="startAnimation(1)">Start 1</button>
+      <button class="start-button" (click)="startAnimation(10)">Start 10</button>
+      <button class="start-button" (click)="startAnimation(100)">Start 100</button>
+    </div>
+  </div>

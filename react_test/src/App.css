@@ -90,13 +90,129 @@ nav ul li a:hover {
   text-decoration: underline;
 }
 
+.container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
 .square {
   width: 50px;
   height: 50px;
   background-color: red;
   position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  transition: transform 2s linear;
 }
+
+.button-container {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.start-button {
+  color: green;
+}
+
+/* .square:nth-child(1) { top: 1%; }
+.square:nth-child(2) { top: 2%; }
+.square:nth-child(3) { top: 3%; }
+.square:nth-child(4) { top: 4%; }
+.square:nth-child(5) { top: 5%; }
+.square:nth-child(6) { top: 6%; }
+.square:nth-child(7) { top: 7%; }
+.square:nth-child(8) { top: 8%; }
+.square:nth-child(9) { top: 9%; }
+.square:nth-child(10) { top: 10%; }
+.square:nth-child(11) { top: 11%; }
+.square:nth-child(12) { top: 12%; }
+.square:nth-child(13) { top: 13%; }
+.square:nth-child(14) { top: 14%; }
+.square:nth-child(15) { top: 15%; }
+.square:nth-child(16) { top: 16%; }
+.square:nth-child(17) { top: 17%; }
+.square:nth-child(18) { top: 18%; }
+.square:nth-child(19) { top: 19%; }
+.square:nth-child(20) { top: 20%; }
+.square:nth-child(21) { top: 21%; }
+.square:nth-child(22) { top: 22%; }
+.square:nth-child(23) { top: 23%; }
+.square:nth-child(24) { top: 24%; }
+.square:nth-child(25) { top: 25%; }
+.square:nth-child(26) { top: 26%; }
+.square:nth-child(27) { top: 27%; }
+.square:nth-child(28) { top: 28%; }
+.square:nth-child(29) { top: 29%; }
+.square:nth-child(30) { top: 30%; }
+.square:nth-child(31) { top: 31%; }
+.square:nth-child(32) { top: 32%; }
+.square:nth-child(33) { top: 33%; }
+.square:nth-child(34) { top: 34%; }
+.square:nth-child(35) { top: 35%; }
+.square:nth-child(36) { top: 36%; }
+.square:nth-child(37) { top: 37%; }
+.square:nth-child(38) { top: 38%; }
+.square:nth-child(39) { top: 39%; }
+.square:nth-child(40) { top: 40%; }
+.square:nth-child(41) { top: 41%; }
+.square:nth-child(42) { top: 42%; }
+.square:nth-child(43) { top: 43%; }
+.square:nth-child(44) { top: 44%; }
+.square:nth-child(45) { top: 45%; }
+.square:nth-child(46) { top: 46%; }
+.square:nth-child(47) { top: 47%; }
+.square:nth-child(48) { top: 48%; }
+.square:nth-child(49) { top: 49%; }
+.square:nth-child(50) { top: 50%; }
+.square:nth-child(51) { top: 51%; }
+.square:nth-child(52) { top: 52%; }
+.square:nth-child(53) { top: 53%; }
+.square:nth-child(54) { top: 54%; }
+.square:nth-child(55) { top: 55%; }
+.square:nth-child(56) { top: 56%; }
+.square:nth-child(57) { top: 57%; }
+.square:nth-child(58) { top: 58%; }
+.square:nth-child(59) { top: 59%; }
+.square:nth-child(60) { top: 60%; }
+.square:nth-child(61) { top: 61%; }
+.square:nth-child(62) { top: 62%; }
+.square:nth-child(63) { top: 63%; }
+.square:nth-child(64) { top: 64%; }
+.square:nth-child(65) { top: 65%; }
+.square:nth-child(66) { top: 66%; }
+.square:nth-child(67) { top: 67%; }
+.square:nth-child(68) { top: 68%; }
+.square:nth-child(69) { top: 69%; }
+.square:nth-child(70) { top: 70%; }
+.square:nth-child(71) { top: 71%; }
+.square:nth-child(72) { top: 72%; }
+.square:nth-child(73) { top: 73%; }
+.square:nth-child(74) { top: 74%; }
+.square:nth-child(75) { top: 75%; }
+.square:nth-child(76) { top: 76%; }
+.square:nth-child(77) { top: 77%; }
+.square:nth-child(78) { top: 78%; }
+.square:nth-child(79) { top: 79%; }
+.square:nth-child(80) { top: 80%; }
+.square:nth-child(81) { top: 81%; }
+.square:nth-child(82) { top: 82%; }
+.square:nth-child(83) { top: 83%; }
+.square:nth-child(84) { top: 84%; }
+.square:nth-child(85) { top: 85%; }
+.square:nth-child(86) { top: 86%; }
+.square:nth-child(87) { top: 87%; }
+.square:nth-child(88) { top: 88%; }
+.square:nth-child(89) { top: 89%; }
+.square:nth-child(90) { top: 90%; }
+.square:nth-child(91) { top: 91%; }
+.square:nth-child(92) { top: 92%; }
+.square:nth-child(93) { top: 93%; }
+.square:nth-child(94) { top: 94%; }
+.square:nth-child(95) { top: 95%; }
+.square:nth-child(96) { top: 96%; }
+.square:nth-child(97) { top: 97%; }
+.square:nth-child(98) { top: 98%; }
+.square:nth-child(99) { top: 99%; }
+.square:nth-child(100) { top: 100%; } */
