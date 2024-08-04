@@ -1,12 +1,10 @@
 <template>
   <div>
-    <div id="menu" class="menu-container" >
-
+    <div id="rendering" class="rendering-container">
       <img alt="Logo" src="../assets/logo.png">
-      <div class="framework" >
+      <div class="framework">
         <h1> Vue Test </h1>
       </div>
-
       <div class="buttons-container">
         <button class="Btn" @click="createRows(1000)"> Create 1000 rows </button>
         <button class="Btn" @click="addRows(1000)"> Add 1000 rows </button>
@@ -19,7 +17,11 @@
 </template>
 
 <script>
-  export default  {
-    props: ['createRows', 'addRows', 'removeRows'],
-  }
+export default {
+  props: {
+    createRows: Function,
+    addRows: Function,
+    removeRows: Function,
+  },
+}
 </script>

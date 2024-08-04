@@ -1,41 +1,62 @@
 <template>
   <div id="app">
-    <Menu v-bind="{createRows, addRows, removeRows}" />
+    <div class="navigation">
+      <button @click="$router.push('/rendering')">Rendering</button>
+      <button @click="$router.push('/animation')">Animation</button>
+    </div>
+    <component :is="currentView" 
+    v-bind="{ createRows, addRows, removeRows, data }"/>
     <table class="data-table">
       <tbody>
         <Row v-for="item in data"
-        :rowId="item.id"
-        :rowLabel="item.label"
-        class="data-row" />
+             :key="item.id"
+             :rowId="item.id"
+             :rowLabel="item.label"
+             class="data-row" />
       </tbody>
     </table>
   </div>
 </template>
 
 <script>
-import Menu from './components/Menu.vue'
 import Row from './components/Row.vue'
+import Rendering from './components/Rendering.vue';
+import Animation from './components/Animation.vue';
 import buildData from './dummyData'
 
 export default {
   name: 'app',
+  components: {
+    Rendering,
+    Row,
+    Animation
+  },
   data() {
     return {
+      currentView: 'Rendering',
       numberOfRows: 0,
       data: [],
     }
   },
-  components: {
-    Menu,
-    Row
+  watch: {
+    '$route'(to) {
+      if (to.path === '/rendering') {
+        this.currentView = 'Rendering';
+      } else if (to.path === '/animation') {
+        this.currentView = 'Animation';
+      } else {
+        this.currentView = null;
+      }
+    }
   },
+
   methods: {
-    addRows( amount) {
+    addRows(amount) {
       this.numberOfRows = this.numberOfRows + amount;
       let data = this.data;
       this.data = data.concat(buildData(amount))
     },
-    createRows( amount) {
+    createRows(amount) {
       this.numberOfRows = amount;
       this.data = buildData(this.numberOfRows);
     },
@@ -44,5 +65,18 @@ export default {
       this.data = [];
     },
   },
+  created() {
+    if (this.$route.path === '/rendering') {
+      this.currentView = 'Rendering';
+    } else if (this.$route.path === '/animation') {
+      this.currentView = 'Animation';
+    } else {
+      this.currentView = null;
+    }
+  }
 }
 </script>
+
+<style scoped>
+/* Twoje style */
+</style>

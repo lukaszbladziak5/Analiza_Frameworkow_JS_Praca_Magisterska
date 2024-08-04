@@ -7,7 +7,7 @@
   margin-top: 60px;
 }
 
-.menu-container {
+.rendering-container {
   position: fixed;
   background-color: white;
   width: 1200px;
@@ -69,4 +69,15 @@ img {
 .big-col {
   width: 1000px;
   background-color: #e0f2f1;
+}
+
+.navigation {
+  margin-bottom: 20px;
+}
+
+.navigation button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
 }
