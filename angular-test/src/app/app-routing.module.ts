@@ -8,7 +8,7 @@ import { RenderingComponent } from './rendering/rendering.component';
 const routes: Routes = [
     { path: 'rendering', component: RenderingComponent },
     { path: 'animation', component: AnimationComponent },
-    { path: '', redirectTo: 'rendering', pathMatch: 'full' }
+    // { path: '', redirectTo: 'rendering', pathMatch: 'full' }
 ];
 
 @NgModule({

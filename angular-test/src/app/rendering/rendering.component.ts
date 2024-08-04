@@ -12,25 +12,9 @@ export class RenderingComponent {
   data: object[];
   add: number =  0;
   create: number =  0;
-  @Output() addEvent = new EventEmitter<number>();
-  @Output() createEvent = new EventEmitter<number>();
-  @Output() removeEvent = new EventEmitter<number>();
 
   constructor() {
     console.log('RenderingComponent');
-  }
-
-  addRows(val :number){
-    console.log('addRows', val)
-    this.addEvent.emit(val)
-  }
-
-  createRows(val :number){
-    this.createEvent.emit(val)
-  }
-
-  removeRows(){
-    this.removeEvent.emit(0)
   }
 
   onAdd($event: number){
@@ -44,6 +28,7 @@ export class RenderingComponent {
   }
 
   onCreate($event: number){
+    console.log('onCreate', $event)
     this.numberOfRows = $event;
     this.data = buildData(this.numberOfRows)
   }
