@@ -18,5 +18,9 @@ export class AppComponent {
   navigateToAnimation() {
     this.router.navigate(['/animation']);
   }
+
+  navigateToMap() {
+    this.router.navigate(['/map']);
+  }
   
 }

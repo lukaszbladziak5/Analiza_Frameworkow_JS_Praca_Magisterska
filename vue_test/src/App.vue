@@ -3,6 +3,7 @@
     <div class="navigation">
       <button @click="$router.push('/rendering')">Rendering</button>
       <button @click="$router.push('/animation')">Animation</button>
+      <button @click="$router.push('/map')">Map</button>
     </div>
     <component :is="currentView" 
     v-bind="{ createRows, addRows, removeRows, data }"/>
@@ -22,6 +23,7 @@
 import Row from './components/Row.vue'
 import Rendering from './components/Rendering.vue';
 import Animation from './components/Animation.vue';
+import Map from './components/Map.vue';
 import buildData from './dummyData'
 
 export default {
@@ -29,7 +31,8 @@ export default {
   components: {
     Rendering,
     Row,
-    Animation
+    Animation,
+    Map
   },
   data() {
     return {
@@ -44,6 +47,8 @@ export default {
         this.currentView = 'Rendering';
       } else if (to.path === '/animation') {
         this.currentView = 'Animation';
+      } else if (to.path === '/map') {
+        this.currentView = 'Map';
       } else {
         this.currentView = null;
       }
@@ -70,6 +75,8 @@ export default {
       this.currentView = 'Rendering';
     } else if (this.$route.path === '/animation') {
       this.currentView = 'Animation';
+    } else if (this.$route.path === '/map') {
+      this.currentView = 'Map';
     } else {
       this.currentView = null;
     }

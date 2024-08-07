@@ -5,6 +5,7 @@ import Rendering from './components/Rendering';
 import Row from './components/Row';
 import buildData from './dummyData';
 import Animation from './components/Animation';
+import Map from './components/Map';
 
 // Higher-order component to provide navigation
 function withNavigation(Component) {
@@ -37,11 +38,12 @@ class App extends Component {
     return (
       <div>
         <nav>
-          <button onClick={() => navigate('/')}>Rendering</button>
+          <button onClick={() => navigate('/rendering')}>Rendering</button>
           <button onClick={() => navigate('/animation')}>Animation</button>
+          <button onClick={() => navigate('/map')}>Map</button>
         </nav>
         <Routes>
-          <Route path="/" element={
+          <Route path="/rendering" element={
             <>
               <Rendering
                 create={this.create}
@@ -58,6 +60,7 @@ class App extends Component {
             </>
           } />
           <Route path="/animation" element={<Animation />} />
+          <Route path="/map" element={<Map />} />
         </Routes>
       </div>
     );

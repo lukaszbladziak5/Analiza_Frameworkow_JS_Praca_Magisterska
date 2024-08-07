@@ -11,6 +11,7 @@
 
 <script>
 export default {
+  /* eslint-disable */
   data() {
     return {
       numSquares: 0,
