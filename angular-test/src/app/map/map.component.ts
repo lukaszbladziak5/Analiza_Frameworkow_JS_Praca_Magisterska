@@ -84,7 +84,7 @@ export class MapComponent implements OnInit, OnDestroy {
       this.greenLine = L.polyline(latlngs, { color: 'green', dashArray: '5, 10' }).addTo(this.map);
     }
 
-    console.log(`Całkowita długość trasy: ${totalDistance.toFixed(2)} metrów`);
+    console.log(`Total distance: ${totalDistance.toFixed(2)} meters`);
   }
 
   startMapTesting(): void {

@@ -96,24 +96,8 @@ const Map = () => {
       // Aktualizuj polilinie
       updatePolylines(newMarkers);
   
-      // Oblicz i wyświetl odległości
-      calculateDistances(newMarkers);
-  
       return newMarkers;
     });
-  };
-
-  const calculateDistances = (markers) => {
-    // Obliczanie długości trasy całkowitej oraz każdej linii między dwoma markerami
-    let totalDistance = 0;
-    for (let i = 0; i < markers.length - 1; i++) {
-        const pointA = L.latLng(markers[i]);
-        const pointB = L.latLng(markers[i + 1]);
-        const distance = pointA.distanceTo(pointB);
-        totalDistance += distance;
-        console.log(`Distance between marker ${i} and marker ${i + 1}: ${distance.toFixed(2)} meters`);
-    }
-    console.log(`Total distance: ${totalDistance.toFixed(2)} meters`);
   };
 
   const updatePolylines = (markers) => {
@@ -129,9 +113,10 @@ const Map = () => {
       setPolylines((prevPolylines) => [...prevPolylines, newPolyline]);
 
       const distance = mapRef.current.distance(markers[i - 1], markers[i]);
-      console.log(`Długość linii między markerem ${i} a markerem ${i + 1}: ${distance.toFixed(2)} metrów`);
+      console.log(`Distance between marker ${i} and marker ${i + 1}: ${distance.toFixed(2)} meters`);
       totalDistance += distance;
     }
+    console.log(`Total distance: ${totalDistance.toFixed(2)} meters`);
 
     // Usuń poprzednią zieloną linię, jeśli istnieje
     if (greenLineRef.current) {
@@ -144,11 +129,8 @@ const Map = () => {
       greenLineRef.current = newGreenLine;
 
       const greenDistance = mapRef.current.distance(markers[0], markers[markers.length - 1]);
-      console.log(`Długość zielonej linii: ${greenDistance.toFixed(2)} metrów`);
       totalDistance += greenDistance;
     }
-
-    console.log(`Całkowita długość trasy: ${totalDistance.toFixed(2)} metrów`);
   };
 
   const startMapTesting = () => {
