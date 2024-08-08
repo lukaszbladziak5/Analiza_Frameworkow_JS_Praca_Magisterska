@@ -8,31 +8,27 @@ import * as L from 'leaflet';
 })
 export class MapComponent implements OnInit, OnDestroy {
   private map: L.Map;
-  private markers: L.LatLng[] = [];
-  private markerLayers: L.Layer[] = [];
-  private polyline: L.Polyline;
+  private markers: L.Marker[] = [];
+  private polylines: L.Polyline[] = [];
   private greenLine: L.Polyline;
   private startTime: number;
   private endTime: number;
-  private startMemoryUsage: number = 0;
-  private endMemoryUsage: number = 0;
-  private monitoringInterval: any;
+  private startMemoryUsage: number;
+  private endMemoryUsage: number;
 
   ngOnInit(): void {
     this.initMap();
   }
 
   ngOnDestroy(): void {
-    if (this.monitoringInterval) {
-      clearInterval(this.monitoringInterval);
-    }
+    this.map.remove();
   }
 
   private initMap(): void {
     this.map = L.map('map').setView([52.397797689636285, 16.858326340887153], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
 
     this.map.on('click', (e: L.LeafletMouseEvent) => {
@@ -40,61 +36,61 @@ export class MapComponent implements OnInit, OnDestroy {
       this.addMarker(lat, lng);
     });
 
-    this.map.on('contextmenu', () => {
+    this.map.on('contextmenu', (e: L.LeafletMouseEvent) => {
       this.removeLastMarker();
     });
   }
 
   private addMarker(lat: number, lng: number): void {
-    const marker = L.marker([lat, lng]).addTo(this.map);
-    this.markers.push(L.latLng(lat, lng));
-    this.markerLayers.push(marker);
+    const markerNumber = this.markers.length + 1;
+    const newMarker = L.marker([lat, lng]).addTo(this.map)
+      .bindPopup(`Marker ${markerNumber} at ${lat.toFixed(4)}, ${lng.toFixed(4)}`)
+      .openPopup();
+
+    newMarker.bindTooltip(markerNumber.toString(), { permanent: true, direction: 'top' }).openTooltip();
+
+    this.markers.push(newMarker);
     this.updatePolylines();
   }
 
   private removeLastMarker(): void {
-    if (this.markerLayers.length > 0) {
-      const lastMarker = this.markerLayers.pop();
+    const lastMarker = this.markers.pop();
+    if (lastMarker) {
       this.map.removeLayer(lastMarker);
-      this.markers.pop();
       this.updatePolylines();
     }
   }
 
   private updatePolylines(): void {
-    if (this.polyline) {
-      this.map.removeLayer(this.polyline);
-    }
-    if (this.markers.length > 0) {
-      this.polyline = L.polyline(this.markers, { color: 'red' }).addTo(this.map);
+    this.polylines.forEach(polyline => this.map.removeLayer(polyline));
+    this.polylines = [];
+
+    let totalDistance = 0;
+
+    for (let i = 1; i < this.markers.length; i++) {
+      const latlngs = [this.markers[i - 1].getLatLng(), this.markers[i].getLatLng()];
+      const polyline = L.polyline(latlngs, { color: 'red' }).addTo(this.map);
+      this.polylines.push(polyline);
+
+      totalDistance += this.map.distance(latlngs[0], latlngs[1]);
     }
 
     if (this.greenLine) {
       this.map.removeLayer(this.greenLine);
     }
+
     if (this.markers.length > 1) {
-      this.greenLine = L.polyline([this.markers[this.markers.length - 1], this.markers[0]], {
-        color: 'green',
-        dashArray: '5, 10'
-      }).addTo(this.map);
+      const latlngs = [this.markers[0].getLatLng(), this.markers[this.markers.length - 1].getLatLng()];
+      this.greenLine = L.polyline(latlngs, { color: 'green', dashArray: '5, 10' }).addTo(this.map);
     }
+
+    console.log(`Całkowita długość trasy: ${totalDistance.toFixed(2)} metrów`);
   }
 
-  private calculateDistances(): void {
-    let totalDistance = 0;
-    for (let i = 0; i < this.markers.length; i++) {
-      const pointA = L.latLng(this.markers[i]);
-      const pointB = L.latLng(this.markers[(i + 1) % this.markers.length]);
-      const distance = pointA.distanceTo(pointB);
-      totalDistance += distance;
-      console.log(`Distance between marker ${i} and marker ${(i + 1) % this.markers.length}: ${distance.toFixed(2)} meters`);
-    }
-    console.log(`Total distance: ${totalDistance.toFixed(2)} meters`);
-  }
-
-  public startMapTesting(): void {
+  startMapTesting(): void {
     this.clearMemory();
-    this.measureMemoryUsage('start');
+
+    this.startMemoryUsage = this.measureMemoryUsage('start');
     this.startTime = performance.now();
 
     console.log('Map testing starts');
@@ -110,35 +106,49 @@ export class MapComponent implements OnInit, OnDestroy {
       () => this.map.setZoom(5),
       () => this.addMarker(51.7652388985917, 19.51171606268491),
       () => this.addMarker(53.43623290839202, 14.518838409359489),
-      () => this.removeLastMarker(),
+      () => this.removeLastMarker()
     ];
 
-    actions.forEach((action, index) => {
-      setTimeout(action, index * 1000);
-    });
-
-    setTimeout(() => {
-      this.calculateDistances();
-      this.endTime = performance.now();
-      this.measureMemoryUsage('end');
-      console.log(`Map testing ends. Duration: ${(this.endTime - this.startTime).toFixed(2)} ms`);
-    }, actions.length * 1000);
-  }
-
-  private measureMemoryUsage(type: 'start' | 'end'): void {
-    if (performance.memory) {
-      if (type === 'start') {
-        this.startMemoryUsage = performance.memory.usedJSHeapSize;
+    let index = 0;
+    const interval = setInterval(() => {
+      if (index < actions.length) {
+        actions[index]();
+        index++;
       } else {
-        this.endMemoryUsage = performance.memory.usedJSHeapSize;
-        console.log(`Memory usage: ${(this.endMemoryUsage - this.startMemoryUsage) / 1024 / 1024} MB`);
+        clearInterval(interval);
+        this.endMemoryUsage = this.measureMemoryUsage('end');
+        this.endTime = performance.now();
+        console.log(`Test completed in ${(this.endTime - this.startTime).toFixed(2)} ms`);
+        console.log(`Memory usage: ${((this.endMemoryUsage - this.startMemoryUsage) / 1048576).toFixed(2)} MB`);
       }
-    }
+    }, 1000);
   }
 
   private clearMemory(): void {
+    this.markers.forEach(marker => this.map.removeLayer(marker));
+    this.markers = [];
+
+    this.polylines.forEach(polyline => this.map.removeLayer(polyline));
+    this.polylines = [];
+
+    if (this.greenLine) {
+      this.map.removeLayer(this.greenLine);
+      this.greenLine = null;
+    }
+
     if (window.gc) {
       window.gc();
+    }
+  }
+
+  private measureMemoryUsage(stage: string): number {
+    if (performance.memory) {
+      const memoryUsage = performance.memory.usedJSHeapSize;
+      console.log(`Memory usage at ${stage}: ${(memoryUsage / 1048576).toFixed(2)} MB`);
+      return memoryUsage;
+    } else {
+      console.log('Memory measurement is not supported in this browser.');
+      return 0;
     }
   }
 }

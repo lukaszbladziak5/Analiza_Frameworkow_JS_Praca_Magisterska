@@ -28,16 +28,12 @@ const Map = () => {
       shadowUrl: markerShadow,
     });
 
-    const map = L.map('map').setView([52.4010, 16.9514], 13);
+    const map = L.map('map').setView([52.397797689636285, 16.858326340887153], 13);
     mapRef.current = map;
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
-
-    L.marker([52.4010, 16.9514]).addTo(map)
-      .bindPopup('Centrum Wykładowe Politechniki Poznańskiej')
-      .openPopup();
 
     // Obsługa kliknięć na mapie
     map.on('click', (e) => {
@@ -72,32 +68,38 @@ const Map = () => {
 
   const removeLastMarker = () => {
     setMarkers((prevMarkers) => {
-        if (prevMarkers.length === 0) return prevMarkers;
-
-        // Usuń ostatni marker z mapy
-        const lastMarkerLayer = markerLayers.pop();
+      if (prevMarkers.length === 0) return prevMarkers;
+  
+      // Usuń ostatni marker z mapy
+      setMarkerLayers((prevLayers) => {
+        const lastMarkerLayer = prevLayers[prevLayers.length - 1];
         if (lastMarkerLayer) {
-            mapRef.current.removeLayer(lastMarkerLayer);
+          mapRef.current.removeLayer(lastMarkerLayer);
         }
-
-        // Usuń ostatni marker z listy markerów
-        const newMarkers = prevMarkers.slice(0, -1);
-
-        // Usuń ostatnią polilinię
-        if (polylines.length > 0) {
-            const lastPolyline = polylines.pop();
-            if (lastPolyline) {
-                mapRef.current.removeLayer(lastPolyline);
-            }
+        return prevLayers.slice(0, -1);
+      });
+  
+      // Usuń ostatni marker z listy markerów
+      const newMarkers = prevMarkers.slice(0, -1);
+  
+      // Usuń ostatnią czerwoną polilinię
+      setPolylines((prevPolylines) => {
+        if (prevPolylines.length === 0) return prevPolylines;
+  
+        const lastPolyline = prevPolylines[prevPolylines.length - 1];
+        if (lastPolyline) {
+          mapRef.current.removeLayer(lastPolyline);
         }
-
-        // Aktualizuj polilinie
-        updatePolylines(newMarkers);
-
-        // Oblicz i wyświetl odległości
-        calculateDistances(newMarkers);
-
-        return newMarkers;
+        return prevPolylines.slice(0, -1);
+      });
+  
+      // Aktualizuj polilinie
+      updatePolylines(newMarkers);
+  
+      // Oblicz i wyświetl odległości
+      calculateDistances(newMarkers);
+  
+      return newMarkers;
     });
   };
 
