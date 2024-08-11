@@ -88,27 +88,51 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   startMapTesting(): void {
-    this.clearMemory();
-
+    this.clearMemory(); // Clear memory before starting the test
+  
+    // Measure memory usage at the start
     this.startMemoryUsage = this.measureMemoryUsage('start');
     this.startTime = performance.now();
-
+  
     console.log('Map testing starts');
     const actions = [
-      () => this.addMarker(54.39046863754263, 18.640354014690107),
-      () => this.addMarker(52.22060312164592, 21.04142415644473),
-      () => this.addMarker(50.0637794880158, 19.911793178349054),
-      () => this.addMarker(51.14515954264793, 16.942034947633704),
-      () => this.addMarker(53.10957407077707, 23.149644035635674),
+      () => this.addMarker(54.39046863754263, 18.640354014690107), // Stadion Energa Gdańsk (Lechia Gdańsk)
+      () => this.addMarker(52.22060312164592, 21.04142415644473), // Stadion Wojska Polskiego (Legia Warszawa)
+      () => this.addMarker(50.0637794880158, 19.911793178349054), // Stadion Miejski im. Henryka Reymana (Wisła Kraków)
+      () => this.addMarker(51.14515954264793, 16.942034947633704), // Stadion Miejski (Śląsk Wrocław)
+      () => this.addMarker(53.10957407077707, 23.149644035635674), // Stadion Miejski (Jagiellonia Białystok)
       () => this.removeLastMarker(),
-      () => this.map.panTo([52.397797689636285, 16.858326340887153]),
+      () => this.map.panTo([52.397797689636285, 16.858326340887153]), // Stadion Miejski (Lech Poznań)
       () => this.map.setZoom(7),
-      () => this.map.setZoom(5),
-      () => this.addMarker(51.7652388985917, 19.51171606268491),
-      () => this.addMarker(53.43623290839202, 14.518838409359489),
+      () => {
+        this.map.setZoom(5);
+        setTimeout(() => {
+          const tileLoadStartTime = performance.now();
+          console.log('Tile load starts');
+          let tilesToLoad = 0;
+          let tilesLoaded = 0;
+  
+          this.map.eachLayer((layer) => {
+            if (layer instanceof L.TileLayer) {
+              layer.on('tileloadstart', () => {
+                tilesToLoad++;
+              });
+              layer.on('tileload', () => {
+                tilesLoaded++;
+                if (tilesLoaded === tilesToLoad) {
+                  const tileLoadEndTime = performance.now();
+                  console.log(`2 TILE load duration: ${(tileLoadEndTime - tileLoadStartTime).toFixed(2)} milliseconds`);
+                }
+              });
+            }
+          });
+        }, 0);
+      },
+      () => this.addMarker(51.7652388985917, 19.51171606268491), // Stadion Widzewa Łódź (Widzew Łódź)
+      () => this.addMarker(53.43623290839202, 14.518838409359489), // Stadion Miejski im. Floriana Krygiera (Pogoń Szczecin)
       () => this.removeLastMarker()
     ];
-
+  
     let index = 0;
     const interval = setInterval(() => {
       if (index < actions.length) {
@@ -118,8 +142,8 @@ export class MapComponent implements OnInit, OnDestroy {
         clearInterval(interval);
         this.endMemoryUsage = this.measureMemoryUsage('end');
         this.endTime = performance.now();
-        console.log(`Test completed in ${(this.endTime - this.startTime).toFixed(2)} ms`);
-        console.log(`Memory usage: ${((this.endMemoryUsage - this.startMemoryUsage) / 1048576).toFixed(2)} MB`);
+        console.log(`1 TEST completed in ${(this.endTime - this.startTime).toFixed(2)} ms`);
+        console.log(`3 MEMORY usage: ${((this.endMemoryUsage - this.startMemoryUsage) / 1048576).toFixed(2)} MB`);
       }
     }, 1000);
   }

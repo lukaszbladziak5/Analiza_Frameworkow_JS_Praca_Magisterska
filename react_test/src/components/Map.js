@@ -143,8 +143,9 @@ const Map = () => {
     // Record start time
     const start = performance.now();
     setStartTime(start);
-  
+    
     console.log('Map testing starts');
+    
     const actions = [
       () => addMarker(54.39046863754263, 18.640354014690107), // Stadion Energa Gdańsk (Lechia Gdańsk)
       () => addMarker(52.22060312164592, 21.04142415644473), // Stadion Wojska Polskiego (Legia Warszawa)
@@ -154,12 +155,35 @@ const Map = () => {
       () => removeLastMarker(),
       () => mapRef.current.panTo([52.397797689636285, 16.858326340887153]), // Stadion Miejski (Lech Poznań)
       () => mapRef.current.setZoom(7),
-      () => mapRef.current.setZoom(5),
+      () => {
+        mapRef.current.setZoom(5);
+        setTimeout(() => {
+          const tileLoadStartTime = performance.now();
+          console.log('Tile load starts');
+          let tilesToLoad = 0;
+          let tilesLoaded = 0;
+    
+          mapRef.current.eachLayer((layer) => {
+            if (layer instanceof L.TileLayer) {
+              layer.on('tileloadstart', () => {
+                tilesToLoad++;
+              });
+              layer.on('tileload', () => {
+                tilesLoaded++;
+                if (tilesLoaded === tilesToLoad) {
+                  const tileLoadEndTime = performance.now();
+                  console.log(`2 TILE load duration: ${(tileLoadEndTime - tileLoadStartTime).toFixed(2)} milliseconds`);
+                }
+              });
+            }
+          });
+        }, 0);
+      },
       () => addMarker(51.7652388985917, 19.51171606268491), // Stadion Widzewa Łódź (Widzew Łódź)
       () => addMarker(53.43623290839202, 14.518838409359489), // Stadion Miejski im. Floriana Krygiera (Pogoń Szczecin)
       () => removeLastMarker()
     ];
-  
+    
     let index = 0;
     const interval = setInterval(() => {
       if (index < actions.length) {
@@ -178,8 +202,8 @@ const Map = () => {
         setEndTime(end);
   
         const memoryUsageDifference = endMemory - startMemory;
-        console.log(`Map testing memory usage difference: ${memoryUsageDifference.toFixed(2)} MBs`);
-        console.log(`Map testing duration: ${(end - start).toFixed(2)} milliseconds`);
+        console.log(`3 MAP testing memory usage difference: ${memoryUsageDifference.toFixed(2)} MBs`);
+        console.log(`1 MAP testing duration: ${(end - start).toFixed(2)} milliseconds`);
       }
     }, 1000);
   };
