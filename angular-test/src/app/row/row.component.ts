@@ -7,7 +7,6 @@ import { Component, Input } from '@angular/core';
 })
 
 export class RowComponent {
-  @Input() id: number;
-  @Input() label: string;
-
+  @Input() id: number = 0;
+  @Input() label: string = '';
 }

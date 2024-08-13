@@ -22,5 +22,9 @@ export class AppComponent {
   navigateToMap() {
     this.router.navigate(['/map']);
   }
+
+  navigateToServer() {
+    this.router.navigate(['/server']);
+  }
   
 }

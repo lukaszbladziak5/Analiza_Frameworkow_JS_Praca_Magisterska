@@ -6,6 +6,7 @@ import Row from './components/Row';
 import buildData from './dummyData';
 import Animation from './components/Animation';
 import Map from './components/Map';
+import Server from './components/Server';
 
 // Higher-order component to provide navigation
 function withNavigation(Component) {
@@ -24,10 +25,6 @@ class App extends Component {
     this.setState({ data: buildData(amount) });
   }
 
-  add = (amount) => {
-    this.setState({ data: this.state.data.concat(buildData(amount)) });
-  }
-
   remove = () => {
     this.setState({ data: [] });
   }
@@ -39,6 +36,7 @@ class App extends Component {
       <div>
         <nav>
           <button onClick={() => navigate('/rendering')}>Rendering</button>
+          <button onClick={() => navigate('/server')}>Server</button>
           <button onClick={() => navigate('/animation')}>Animation</button>
           <button onClick={() => navigate('/map')}>Map</button>
         </nav>
@@ -47,8 +45,31 @@ class App extends Component {
             <>
               <Rendering
                 create={this.create}
-                add={this.add}
                 remove={this.remove}
+              />
+              <table className="data-table">
+                <tbody>
+                  {this.state.data.map((item, i) => (
+                    <Row key={i} item={item}></Row>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          } />
+          <Route path="/server" element={
+            <>
+              <Server 
+                // data={this.state.data}
+                create={this.create}
+                remove={this.remove}
+                onCreateOneThousandRows={this.onCreateOneThousandRows}
+                onCreateTenThousandsRows={this.onCreateTenThousandsRows}
+                onGetOneThousandRows={this.onGetOneThousandRows}
+                onGetTenThousandsRows={this.onGetTenThousandsRows}
+                onUpdateOneThousandRows={this.onUpdateOneThousandRows}
+                onUpdateTenThousandsRows={this.onUpdateTenThousandsRows}
+                onRemove={this.onRemove}
+                clearDatabase={this.clearDatabase}
               />
               <table className="data-table">
                 <tbody>

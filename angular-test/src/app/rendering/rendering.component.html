@@ -7,9 +7,7 @@
 
   <div class="buttons-container">
     <button class="Btn" (click)="onCreate(1000)"> Create 1000 rows </button>
-    <button class="Btn" (click)="onAdd(1000)"> Add 1000 rows </button>
     <button class="Btn" (click)="onCreate(10000)"> Create 10 000 rows </button>
-    <button class="Btn" (click)="onAdd(10000)"> Add 10 000 rows </button>
     <button class="Btn" (click)="onRemove()"> Clear </button>
   </div>
 </div>
@@ -18,7 +16,6 @@
   <table class="data-table">
     <tbody>
       <app-row
-        (addEvent)="onAdd($event)"
         (createEvent)="onCreate($event)"
         (removeEvent)="onRemove()"
         *ngFor="let row of data"
