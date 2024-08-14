@@ -17,10 +17,8 @@ export class ServerComponent {
   constructor(private http: HttpClient) {}
 
   onUpdateOneThousandRows($event: number) {
-    console.log('onUpdate', $event);
+    // console.log('onUpdate', $event);
     this.numberOfRows = $event;
-
-    const startTime = performance.now();
     this.http.get<{ [key: string]: any }>(this.databaseLink + '/api/oneThousandRowsCollections.json')
     .subscribe(response => {
       if (response && typeof response === 'object') {
@@ -28,11 +26,12 @@ export class ServerComponent {
 
         keys.forEach(key => {
           const newData = buildData(this.numberOfRows);
+          const startTime = performance.now();
           this.http.put(`${this.databaseLink}/api/oneThousandRowsCollections/${key}.json`, newData)
           .subscribe(updateResponse => {
               const endTime = performance.now();
-              console.log(`Data updated in Firebase for key ${key}`, updateResponse);
-              console.log(`Time taken: ${endTime - startTime} ms`);
+              console.log(`PUT 1 000 rows time: ${endTime - startTime} ms`);
+              // console.log(`Data updated in Firebase for key ${key}`, updateResponse);
           });
         });
       }
@@ -40,10 +39,8 @@ export class ServerComponent {
   }
 
   onUpdateTenThousandsRows($event: number) {
-    console.log('onUpdate', $event);
+    // console.log('onUpdate', $event);
     this.numberOfRows = $event;
-
-    const startTime = performance.now();
     this.http.get<{ [key: string]: any }>(this.databaseLink + '/api/tenThousandsRowsCollections.json')
     .subscribe(response => {
       if (response && typeof response === 'object') {
@@ -51,11 +48,12 @@ export class ServerComponent {
 
         keys.forEach(key => {
           const newData = buildData(this.numberOfRows);
+          const startTime = performance.now();
           this.http.put(`${this.databaseLink}/api/tenThousandRowsCollections/${key}.json`, newData)
           .subscribe(updateResponse => {
               const endTime = performance.now();
-              console.log(`Data updated in Firebase for key ${key}`, updateResponse);
-              console.log(`Time taken: ${endTime - startTime} ms`);
+              console.log(`PUT 10 000 rows time: ${endTime - startTime} ms`);
+              // console.log(`Data updated in Firebase for key ${key}`, updateResponse);
           });
         });
       }
@@ -63,52 +61,37 @@ export class ServerComponent {
   }
 
   onCreateOneThousandRows($event: number) {
-    console.log('onCreate', $event);
+    // console.log('onCreate', $event);
     this.numberOfRows = $event;
     const newData = buildData(this.numberOfRows);
   
     const startTime = performance.now();
     this.http.post(`${this.databaseLink}/api/oneThousandRowsCollections.json`, newData).subscribe(response => {
         const endTime = performance.now();
-        console.log('Data added to Firebase', response);
-        console.log(`Time taken: ${endTime - startTime} ms`);
+        console.log(`POST 1 000 rows time: ${endTime - startTime} ms`);
+        // console.log('Data added to Firebase', response);
     });
   }
   
   onCreateTenThousandsRows($event: number) {
-    console.log('onCreate', $event);
+    // console.log('onCreate', $event);
     this.numberOfRows = $event;
     const newData = buildData(this.numberOfRows);
   
     const startTime = performance.now();
-    this.http.get(this.databaseLink + '/api/tenThousandsRowsCollections.json').subscribe(response => {
-      let nextId = 1; // Domyślny identyfikator, jeśli baza danych jest pusta
-  
-      if (response && typeof response === 'object') {
-        const dataArray = Object.keys(response);
-        if (dataArray.length > 0) {
-          const lastId = Math.max(...dataArray.map(id => parseInt(id, 10)));
-          nextId = lastId + 1;
-        }
-      }
-  
-      this.http.post(`${this.databaseLink}/api/tenThousandsRowsCollections/${nextId}.json`, newData).subscribe(response => {
+    this.http.post(`${this.databaseLink}/api/tenThousandsRowsCollections.json`, newData).subscribe(response => {
         const endTime = performance.now();
-        console.log('Data added to Firebase', response);
-        console.log(`Time taken: ${endTime - startTime} ms`);
-      });
+        console.log(`POST 10 000 rows time: ${endTime - startTime} ms`);
+        // console.log('Data added to Firebase', response);
     });
   }
-
   onGetOneThousandRows() {
     this.data = []; // Resetuj dane przed pobraniem nowych
-
-    const startTime = performance.now();
     this.http.get<{ [key: string]: any }>(this.databaseLink + '/api/oneThousandRowsCollections.json').subscribe(response => {
         if (response && typeof response === 'object') {
             const keys = Object.keys(response);
-
             keys.forEach(key => {
+                const startTime = performance.now();
                 this.http.get(this.databaseLink + `/api/oneThousandRowsCollections/${key}.json`).subscribe(dataResponse => {
                     if (dataResponse && typeof dataResponse === 'object') {
                         const dataArray = Object.values(dataResponse);
@@ -119,8 +102,8 @@ export class ServerComponent {
                         this.data = [...this.data, ...newData];
                     }
                     const endTime = performance.now();
-                    console.log('Data fetched from Firebase', this.data);
-                    console.log(`Time taken: ${endTime - startTime} ms`);
+                    console.log(`GET 1 000 rows time: ${endTime - startTime} ms`);
+                    // console.log('Data fetched from Firebase', this.data);
                 });
             });
         }
@@ -129,13 +112,12 @@ export class ServerComponent {
 
   onGetTenThousandsRows() {
     this.data = []; // Resetuj dane przed pobraniem nowych
-
-    const startTime = performance.now();
     this.http.get<{ [key: string]: any }>(this.databaseLink + '/api/tenThousandsRowsCollections.json').subscribe(response => {
         if (response && typeof response === 'object') {
             const keys = Object.keys(response);
 
             keys.forEach(key => {
+                const startTime = performance.now();
                 this.http.get(this.databaseLink + `/api/tenThousandsRowsCollections/${key}.json`).subscribe(dataResponse => {
                     if (dataResponse && typeof dataResponse === 'object') {
                         const dataArray = Object.values(dataResponse);
@@ -146,9 +128,9 @@ export class ServerComponent {
                         this.data = [...this.data, ...newData];
                     }
                     const endTime = performance.now();
-                    console.log('Data fetched from Firebase', this.data);
-                    console.log(`Time taken: ${endTime - startTime} ms`);
-                });
+                    console.log(`GET 10 000 rows time: ${endTime - startTime} ms`);
+                    // console.log('Data fetched from Firebase', this.data);               
+                   });
             });
         }
     });
@@ -163,8 +145,8 @@ export class ServerComponent {
     const startTime = performance.now();
     this.http.delete(this.databaseLink + '.json').subscribe(response => {
       const endTime = performance.now();
-      console.log('Database cleared', response);
-      console.log(`Time taken: ${endTime - startTime} ms`);
+      console.log(`DELETE all rows in database time: ${endTime - startTime} ms`);
+      // console.log('Database cleared', response);
     });
   }
 }

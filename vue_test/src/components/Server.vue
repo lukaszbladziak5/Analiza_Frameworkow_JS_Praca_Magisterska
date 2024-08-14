@@ -50,7 +50,7 @@ methods: {
     return buildData(count);
   },
   async onCreateOneThousandRows(num) {
-    console.log('onCreate', num);
+    // console.log('onCreate', num);
     this.numberOfRows = num;
     const newData = this.buildData(num);
 
@@ -58,14 +58,14 @@ methods: {
     try {
       const response = await axios.post(`${this.databaseLink}/api/oneThousandRowsCollections.json`, newData);
       const endTime = performance.now();
-      console.log('Data added to Firebase', response);
-      console.log(`Time taken: ${endTime - startTime} ms`);
+      console.log(`POST 1 000 rows time: ${endTime - startTime} ms`);
+      // console.log('Data added to Firebase', response);
     } catch (error) {
       console.error(error);
     }
   },
   async onCreateTenThousandsRows(num) {
-    console.log('onCreate', num);
+    // console.log('onCreate', num);
     this.numberOfRows = num;
     const newData = this.buildData(num);
 
@@ -73,27 +73,26 @@ methods: {
     try {
       const response = await axios.post(`${this.databaseLink}/api/tenThousandsRowsCollections.json`, newData);
       const endTime = performance.now();
-      console.log('Data added to Firebase', response);
-      console.log(`Time taken: ${endTime - startTime} ms`);
+      console.log(`POST 10 000 rows: ${endTime - startTime} ms`);
+      // console.log('Data added to Firebase', response);
     } catch (error) {
       console.error(error);
     }
   },
   async onUpdateOneThousandRows(num) {
-    console.log('onUpdate', num);
+    // console.log('onUpdate', num);
     this.numberOfRows = num;
-
-    const startTime = performance.now();
     try {
       const response = await axios.get(`${this.databaseLink}/api/oneThousandRowsCollections.json`);
       if (response.data && typeof response.data === 'object') {
         const keys = Object.keys(response.data);
         keys.forEach(async key => {
           const newData = this.buildData(this.numberOfRows);
+          const startTime = performance.now();
           const updateResponse = await axios.put(`${this.databaseLink}/api/oneThousandRowsCollections/${key}.json`, newData);
           const endTime = performance.now();
-          console.log(`Data updated in Firebase for key ${key}`, updateResponse);
-          console.log(`Time taken: ${endTime - startTime} ms`);
+          console.log(`PUT 1 000 rows time: ${endTime - startTime} ms`);
+          // console.log(`Data updated in Firebase for key ${key}`, updateResponse);
         });
       }
     } catch (error) {
@@ -101,20 +100,20 @@ methods: {
     }
   },
   async onUpdateTenThousandsRows(num) {
-    console.log('onUpdate', num);
+    // console.log('onUpdate', num);
     this.numberOfRows = num;
 
-    const startTime = performance.now();
     try {
       const response = await axios.get(`${this.databaseLink}/api/tenThousandsRowsCollections.json`);
       if (response.data && typeof response.data === 'object') {
         const keys = Object.keys(response.data);
         keys.forEach(async key => {
           const newData = this.buildData(this.numberOfRows);
+          const startTime = performance.now();
           const updateResponse = await axios.put(`${this.databaseLink}/api/tenThousandsRowsCollections/${key}.json`, newData);
           const endTime = performance.now();
-          console.log(`Data updated in Firebase for key ${key}`, updateResponse);
-          console.log(`Time taken: ${endTime - startTime} ms`);
+          console.log(`PUT 10 000 rows time: ${endTime - startTime} ms`);
+          // console.log(`Data updated in Firebase for key ${key}`, updateResponse);
         });
       }
     } catch (error) {
@@ -123,13 +122,12 @@ methods: {
   },
   async onGetOneThousandRows() {
     this.data = []; // Resetuj dane przed pobraniem nowych
-
-    const startTime = performance.now();
     try {
       const response = await axios.get(`${this.databaseLink}/api/oneThousandRowsCollections.json`);
       if (response.data && typeof response.data === 'object') {
         const keys = Object.keys(response.data);
         keys.forEach(async key => {
+          const startTime = performance.now();
           const dataResponse = await axios.get(`${this.databaseLink}/api/oneThousandRowsCollections/${key}.json`);
           if (dataResponse.data && typeof dataResponse.data === 'object') {
             const dataArray = Object.values(dataResponse.data);
@@ -140,8 +138,8 @@ methods: {
             this.data = [...this.data, ...newData];
           }
           const endTime = performance.now();
-          console.log('Data fetched from Firebase', this.data);
-          console.log(`Time taken: ${endTime - startTime} ms`);
+          console.log(`GET 1 000 rows time: ${endTime - startTime} ms`);
+          // console.log('Data fetched from Firebase', this.data);
         });
       }
     } catch (error) {
@@ -150,13 +148,12 @@ methods: {
   },
   async onGetTenThousandsRows() {
     this.data = []; // Resetuj dane przed pobraniem nowych
-
-    const startTime = performance.now();
     try {
       const response = await axios.get(`${this.databaseLink}/api/tenThousandsRowsCollections.json`);
       if (response.data && typeof response.data === 'object') {
         const keys = Object.keys(response.data);
         keys.forEach(async key => {
+          const startTime = performance.now();
           const dataResponse = await axios.get(`${this.databaseLink}/api/tenThousandsRowsCollections/${key}.json`);
           if (dataResponse.data && typeof dataResponse.data === 'object') {
             const dataArray = Object.values(dataResponse.data);
@@ -167,8 +164,8 @@ methods: {
             this.data = [...this.data, ...newData];
           }
           const endTime = performance.now();
-          console.log('Data fetched from Firebase', this.data);
-          console.log(`Time taken: ${endTime - startTime} ms`);
+          console.log(`GET 10 000 rows time: ${endTime - startTime} ms`);
+          // console.log('Data fetched from Firebase', this.data);
         });
       }
     } catch (error) {
@@ -184,8 +181,8 @@ methods: {
     try {
       const response = await axios.delete(`${this.databaseLink}.json`);
       const endTime = performance.now();
-      console.log('Database cleared', response);
-      console.log(`Time taken: ${endTime - startTime} ms`);
+      console.log(`DELETE all rows in database time: ${endTime - startTime} ms`);
+      // console.log('Database cleared', response);
     } catch (error) {
       console.error(error);
     }

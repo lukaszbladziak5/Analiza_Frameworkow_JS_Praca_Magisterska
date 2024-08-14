@@ -33,7 +33,7 @@ class App extends Component {
     const { navigate } = this.props;
 
     return (
-      <div>
+      <div className = "navigation">
         <nav>
           <button onClick={() => navigate('/rendering')}>Rendering</button>
           <button onClick={() => navigate('/server')}>Server</button>
