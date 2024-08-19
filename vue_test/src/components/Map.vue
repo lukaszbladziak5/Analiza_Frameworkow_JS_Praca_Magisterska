@@ -33,7 +33,6 @@
             };
         },
         mounted() {
-            // Fix Leaflet's default icon paths
             delete L.Icon.Default.prototype._getIconUrl;
 
             L.Icon.Default.mergeOptions({
@@ -93,12 +92,9 @@
             console.log(`Total distance: ${totalDistance.toFixed(2)} meters`);
             },
             startMapTesting() {
-                this.clearMemory(); // Clear memory before starting the test
-
-                // Measure memory usage at the start
+                this.clearMemory();
                 this.measureMemoryUsage('start');
 
-                // Record start time
                 this.startTime = performance.now();
 
                 console.log('Map testing starts');
@@ -126,7 +122,7 @@
                                     this.tilesLoaded++;
                                         if (this.tilesLoaded === this.tilesToLoad) {
                                             const tileLoadEndTime = performance.now();
-                                            console.log(`2 TILE load duration: ${(tileLoadEndTime - tileLoadStartTime).toFixed(2)} milliseconds`);
+                                            console.log(`Tile load duration: ${(tileLoadEndTime - tileLoadStartTime).toFixed(2)} milliseconds`);
                                         }
                                 });
                             }
@@ -147,15 +143,13 @@
                     clearInterval(interval);
                     console.log('Map testing ends');
 
-                    // Measure memory usage at the end
                     this.measureMemoryUsage('end');
 
-                    // Record end time and calculate duration
                     this.endTime = performance.now();
                     const memoryUsageDifference = this.endMemoryUsage - this.startMemoryUsage;
                     const performanceDuration = this.endTime - this.startTime;
-                    console.log(`3 MAP testing memory usage difference: ${memoryUsageDifference.toFixed(2)} MBs`);
-                    console.log(`1 MAP testing duration: ${performanceDuration.toFixed(2)} milliseconds`);
+                    console.log(`Map testing memory usage difference: ${memoryUsageDifference.toFixed(2)} MBs`);
+                    console.log(`Map testing duration: ${performanceDuration.toFixed(2)} milliseconds`);
                     }
                 }, 1000);
             },
@@ -210,7 +204,7 @@
             },
             measureMemoryUsage(stage) {
             if (performance.memory) {
-                const memoryUsage = performance.memory.usedJSHeapSize / 1048576; // Convert to MB
+                const memoryUsage = performance.memory.usedJSHeapSize / 1048576;
                 console.log(`Memory Usage (${stage}): ${memoryUsage.toFixed(2)} MB`);
                 if (stage === 'start') {
                 this.startMemoryUsage = memoryUsage;

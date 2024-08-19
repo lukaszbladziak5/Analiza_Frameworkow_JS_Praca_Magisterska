@@ -31,7 +31,7 @@ export default {
       if (squares.length === 0) return;
 
       const screenWidth = window.innerWidth;
-      const speed = 500; // Speed in pixels per second
+      const speed = 500;
       let start = null;
       let frameCount = 0;
       const startTime = performance.now();
@@ -43,10 +43,10 @@ export default {
         }
         frameCount++;
         const progress = timestamp - start;
-        const distance = (progress / 1000) * speed; // Distance in pixels
+        const distance = (progress / 1000) * speed;
         squares.forEach((square, index) => {
           square.style.transform = `translateX(${Math.min(distance, screenWidth - square.offsetWidth)}px)`;
-          square.style.top = `${index * 60}px`; // Set vertical position
+          square.style.top = `${index * 60}px`;
         });
 
         if (distance < screenWidth - squares[0].offsetWidth) {
@@ -59,7 +59,7 @@ export default {
           console.log(`Attempt: ${attemptNumber}. Average frame time: ${averageFrameTime} ms`);
 
           if (attemptNumber < 5) {
-            setTimeout(() => this.animateSquares(attemptNumber + 1), 1000); // Delay before next attempt
+            setTimeout(() => this.animateSquares(attemptNumber + 1), 1000);
           }
         }
       };

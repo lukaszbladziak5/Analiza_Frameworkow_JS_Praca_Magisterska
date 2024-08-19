@@ -8,7 +8,6 @@ import Animation from './components/Animation';
 import Map from './components/Map';
 import Server from './components/Server';
 
-// Higher-order component to provide navigation
 function withNavigation(Component) {
   return function WrappedComponent(props) {
     const navigate = useNavigate();
@@ -59,7 +58,6 @@ class App extends Component {
           <Route path="/server" element={
             <>
               <Server 
-                // data={this.state.data}
                 create={this.create}
                 remove={this.remove}
                 onCreateOneThousandRows={this.onCreateOneThousandRows}

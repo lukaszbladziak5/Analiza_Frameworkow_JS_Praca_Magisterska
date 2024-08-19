@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import buildData from '../dummyData'; // Importowanie funkcji buildData
+import buildData from '../dummyData';
 import '../Server.css';
 import logo from '../logo.png';
 import Row from './Row';
@@ -11,7 +11,6 @@ const Server = () => {
   const databaseLink = 'https://analiza-frameworkow-js-default-rtdb.firebaseio.com/data';
 
   const onUpdateOneThousandRows = async (num) => {
-    // console.log('onUpdate', num);
     setNumberOfRows(num);
     try {
       const response = await axios.get(`${databaseLink}/api/oneThousandRowsCollections.json`);
@@ -31,7 +30,6 @@ const Server = () => {
   };
 
   const onUpdateTenThousandsRows = async (num) => {
-    // console.log('onUpdate', num);
     setNumberOfRows(num);
     try {
       const response = await axios.get(`${databaseLink}/api/tenThousandsRowsCollections.json`);
@@ -51,7 +49,6 @@ const Server = () => {
   };
 
   const onCreateOneThousandRows = async (num) => {
-    // console.log('onCreate', num);
     setNumberOfRows(num);
     const newData = buildData(num);
     const startTime = performance.now();
@@ -60,14 +57,13 @@ const Server = () => {
       const response = await axios.post(`${databaseLink}/api/oneThousandRowsCollections.json`, newData);
       const endTime = performance.now();
       console.log(`POST 1 000 rows time: ${endTime - startTime} ms`);
-      // console.log('Data added to Firebase', response);
+      console.log('Data added to Firebase', response);
     } catch (error) {
       console.error(error);
     }
   };
 
   const onCreateTenThousandsRows = async (num) => {
-    // console.log('onCreate', num);
     setNumberOfRows(num);
     const newData = buildData(num);
     const startTime = performance.now();
@@ -76,7 +72,7 @@ const Server = () => {
       const response = await axios.post(`${databaseLink}/api/tenThousandsRowsCollections.json`, newData);
       const endTime = performance.now();
       console.log(`POST 10 000 rows time: ${endTime - startTime} ms`);
-      // console.log('Data added to Firebase', response);
+      console.log('Data added to Firebase', response);
     } catch (error) {
       console.error(error);
     }
@@ -154,7 +150,7 @@ const Server = () => {
       const response = await axios.delete(`${databaseLink}.json`);
       const endTime = performance.now();
       console.log(`DELETE all rows in database time: ${endTime - startTime} ms`);
-      // console.log('Database cleared', response);
+      console.log('Database cleared', response);
     } catch (error) {
       console.error(error);
     }
@@ -170,14 +166,14 @@ const Server = () => {
       <div className="buttons-container">
         <button id="create-1000" className="Btn" onClick={() => onCreateOneThousandRows(1000)}>Create 1 000 rows</button>
         <button id="create-10000" className="Btn" onClick={() => onCreateTenThousandsRows(10000)}>Create 10 000 rows</button>
-        <button id="get-1000" className="Btn" onClick={onGetOneThousandRows}>Get 1 000 rows collections</button>
-        <button id="get-10000" className="Btn" onClick={onGetTenThousandsRows}>Get 10 000 rows collections</button>
+        <button id="get-1000" className="Btn" onClick={onGetOneThousandRows}>Read 1 000 rows collections</button>
+        <button id="get-10000" className="Btn" onClick={onGetTenThousandsRows}>Read 10 000 rows collections</button>
         <button id="update-1000" className="Btn" onClick={() => onUpdateOneThousandRows(1000)}>Update 1 000 rows collections</button>
         <button id="update-10000" className="Btn" onClick={() => onUpdateTenThousandsRows(10000)}>Update 10 000 rows collections</button>
         <button id="remove" className="Btn" onClick={onRemove}>Clear page</button>
-        <button id="clear-db" className="Btn" onClick={clearDatabase}>Clear database</button>
+        <button id="clear-db" className="Btn" onClick={clearDatabase}>Delete data from database</button>
       </div>
-      <div className='dupa'>
+      <div className='div-table'>
       <table className="data-table">
         <tbody>
           {data.map((item, i) => (

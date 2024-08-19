@@ -9,12 +9,12 @@
       <div class="buttons-container">
         <button class="Btn" @click="onCreateOneThousandRows(1000)">Create 1 000 rows</button>
         <button class="Btn" @click="onCreateTenThousandsRows(10000)">Create 10 000 rows</button>
-        <button class="Btn" @click="onGetOneThousandRows()">Get 1 000 rows collection</button>
-        <button class="Btn" @click="onGetTenThousandsRows()">Get 10 000 rows collection</button>
+        <button class="Btn" @click="onGetOneThousandRows()">Read 1 000 rows collection</button>
+        <button class="Btn" @click="onGetTenThousandsRows()">Read 10 000 rows collection</button>
         <button class="Btn" @click="onUpdateOneThousandRows(1000)">Update 1 000 rows collection</button>
         <button class="Btn" @click="onUpdateTenThousandsRows(10000)">Update 10 000 rows collection</button>
         <button class="Btn" @click="onRemove()">Clear page</button>
-        <button class="Btn" @click="clearDatabase()">Clear database</button>
+        <button class="Btn" @click="clearDatabase()">Delete data from database</button>
       </div>
     </div>
 
@@ -34,7 +34,7 @@
 <script>
 /* eslint-disable */
 import axios from 'axios';
-import buildData from '../dummyData.js'; // Upewnij się, że ścieżka jest poprawna
+import buildData from '../dummyData.js';
 
 export default {
 name: 'ServerComponent',
@@ -50,7 +50,6 @@ methods: {
     return buildData(count);
   },
   async onCreateOneThousandRows(num) {
-    // console.log('onCreate', num);
     this.numberOfRows = num;
     const newData = this.buildData(num);
 
@@ -59,13 +58,12 @@ methods: {
       const response = await axios.post(`${this.databaseLink}/api/oneThousandRowsCollections.json`, newData);
       const endTime = performance.now();
       console.log(`POST 1 000 rows time: ${endTime - startTime} ms`);
-      // console.log('Data added to Firebase', response);
+      console.log('Data added to Firebase', response);
     } catch (error) {
       console.error(error);
     }
   },
   async onCreateTenThousandsRows(num) {
-    // console.log('onCreate', num);
     this.numberOfRows = num;
     const newData = this.buildData(num);
 
@@ -74,13 +72,12 @@ methods: {
       const response = await axios.post(`${this.databaseLink}/api/tenThousandsRowsCollections.json`, newData);
       const endTime = performance.now();
       console.log(`POST 10 000 rows: ${endTime - startTime} ms`);
-      // console.log('Data added to Firebase', response);
+      console.log('Data added to Firebase', response);
     } catch (error) {
       console.error(error);
     }
   },
   async onUpdateOneThousandRows(num) {
-    // console.log('onUpdate', num);
     this.numberOfRows = num;
     try {
       const response = await axios.get(`${this.databaseLink}/api/oneThousandRowsCollections.json`);
@@ -92,7 +89,7 @@ methods: {
           const updateResponse = await axios.put(`${this.databaseLink}/api/oneThousandRowsCollections/${key}.json`, newData);
           const endTime = performance.now();
           console.log(`PUT 1 000 rows time: ${endTime - startTime} ms`);
-          // console.log(`Data updated in Firebase for key ${key}`, updateResponse);
+          console.log(`Data updated in Firebase for key ${key}`, updateResponse);
         });
       }
     } catch (error) {
@@ -100,7 +97,6 @@ methods: {
     }
   },
   async onUpdateTenThousandsRows(num) {
-    // console.log('onUpdate', num);
     this.numberOfRows = num;
 
     try {
@@ -113,7 +109,7 @@ methods: {
           const updateResponse = await axios.put(`${this.databaseLink}/api/tenThousandsRowsCollections/${key}.json`, newData);
           const endTime = performance.now();
           console.log(`PUT 10 000 rows time: ${endTime - startTime} ms`);
-          // console.log(`Data updated in Firebase for key ${key}`, updateResponse);
+          console.log(`Data updated in Firebase for key ${key}`, updateResponse);
         });
       }
     } catch (error) {
@@ -139,7 +135,7 @@ methods: {
           }
           const endTime = performance.now();
           console.log(`GET 1 000 rows time: ${endTime - startTime} ms`);
-          // console.log('Data fetched from Firebase', this.data);
+          console.log('Data fetched from Firebase', this.data);
         });
       }
     } catch (error) {
@@ -165,7 +161,7 @@ methods: {
           }
           const endTime = performance.now();
           console.log(`GET 10 000 rows time: ${endTime - startTime} ms`);
-          // console.log('Data fetched from Firebase', this.data);
+          console.log('Data fetched from Firebase', this.data);
         });
       }
     } catch (error) {
@@ -182,7 +178,7 @@ methods: {
       const response = await axios.delete(`${this.databaseLink}.json`);
       const endTime = performance.now();
       console.log(`DELETE all rows in database time: ${endTime - startTime} ms`);
-      // console.log('Database cleared', response);
+      console.log('Database cleared', response);
     } catch (error) {
       console.error(error);
     }

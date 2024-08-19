@@ -88,9 +88,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   startMapTesting(): void {
-    this.clearMemory(); // Clear memory before starting the test
-  
-    // Measure memory usage at the start
+    this.clearMemory();
     this.startMemoryUsage = this.measureMemoryUsage('start');
     this.startTime = performance.now();
   
@@ -121,7 +119,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 tilesLoaded++;
                 if (tilesLoaded === tilesToLoad) {
                   const tileLoadEndTime = performance.now();
-                  console.log(`2 TILE load duration: ${(tileLoadEndTime - tileLoadStartTime).toFixed(2)} milliseconds`);
+                  console.log(`Tile load duration: ${(tileLoadEndTime - tileLoadStartTime).toFixed(2)} milliseconds`);
                 }
               });
             }
@@ -142,8 +140,8 @@ export class MapComponent implements OnInit, OnDestroy {
         clearInterval(interval);
         this.endMemoryUsage = this.measureMemoryUsage('end');
         this.endTime = performance.now();
-        console.log(`1 TEST completed in ${(this.endTime - this.startTime).toFixed(2)} ms`);
-        console.log(`3 MEMORY usage: ${((this.endMemoryUsage - this.startMemoryUsage) / 1048576).toFixed(2)} MB`);
+        console.log(`Test completed in ${(this.endTime - this.startTime).toFixed(2)} ms`);
+        console.log(`Memory usage: ${((this.endMemoryUsage - this.startMemoryUsage) / 1048576).toFixed(2)} MB`);
       }
     }, 1000);
   }

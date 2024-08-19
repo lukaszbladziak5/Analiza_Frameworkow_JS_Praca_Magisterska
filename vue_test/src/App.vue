@@ -87,5 +87,4 @@ export default {
 </script>
 
 <style scoped>
-/* Twoje style */
 </style>

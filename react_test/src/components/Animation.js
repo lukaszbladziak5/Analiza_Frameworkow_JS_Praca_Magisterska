@@ -41,7 +41,7 @@ const Animation = () => {
             console.log(`Attempt: ${attemptNumber}. Average frame time: ${averageFrameTime} ms`);
 
             if (attemptNumber < 5) {
-              setTimeout(() => runAnimation(attemptNumber + 1), 1000); // Delay before next attempt
+              setTimeout(() => runAnimation(attemptNumber + 1), 1000);
             }
           }
         };
@@ -50,7 +50,7 @@ const Animation = () => {
       };
 
       runAnimation(1);
-      setStartAnimationFlag(false); // Reset the flag
+      setStartAnimationFlag(false);
     }
   }, [startAnimationFlag, numSquares]);
 

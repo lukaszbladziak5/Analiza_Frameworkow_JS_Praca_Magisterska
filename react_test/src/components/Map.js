@@ -19,7 +19,6 @@ const Map = () => {
   const [endMemoryUsage, setEndMemoryUsage] = useState(0);
 
   useEffect(() => {
-    // Fix Leaflet's default icon paths
     delete L.Icon.Default.prototype._getIconUrl;
 
     L.Icon.Default.mergeOptions({
@@ -134,13 +133,10 @@ const Map = () => {
   };
 
   const startMapTesting = () => {
-    clearMemory(); // Clear memory before starting the test
-  
-    // Measure memory usage at the start
+    clearMemory();
     const startMemory = measureMemoryUsage('start');
     setStartMemoryUsage(startMemory);
   
-    // Record start time
     const start = performance.now();
     setStartTime(start);
     
@@ -172,7 +168,7 @@ const Map = () => {
                 tilesLoaded++;
                 if (tilesLoaded === tilesToLoad) {
                   const tileLoadEndTime = performance.now();
-                  console.log(`2 TILE load duration: ${(tileLoadEndTime - tileLoadStartTime).toFixed(2)} milliseconds`);
+                  console.log(`Tile load duration: ${(tileLoadEndTime - tileLoadStartTime).toFixed(2)} milliseconds`);
                 }
               });
             }
@@ -193,17 +189,15 @@ const Map = () => {
         clearInterval(interval);
         console.log('Map testing ends');
   
-        // Measure memory usage at the end
         const endMemory = measureMemoryUsage('end');
         setEndMemoryUsage(endMemory);
   
-        // Record end time and calculate duration
         const end = performance.now();
         setEndTime(end);
   
         const memoryUsageDifference = endMemory - startMemory;
-        console.log(`3 MAP testing memory usage difference: ${memoryUsageDifference.toFixed(2)} MBs`);
-        console.log(`1 MAP testing duration: ${(end - start).toFixed(2)} milliseconds`);
+        console.log(`Map testing memory usage difference: ${memoryUsageDifference.toFixed(2)} MBs`);
+        console.log(`Map testing duration: ${(end - start).toFixed(2)} milliseconds`);
       }
     }, 1000);
   };
@@ -234,7 +228,7 @@ const Map = () => {
 
   const measureMemoryUsage = (stage) => {
     if (performance.memory) {
-      const memoryUsage = performance.memory.usedJSHeapSize / 1048576; // Convert to MB
+      const memoryUsage = performance.memory.usedJSHeapSize / 1048576;
       console.log(`Memory Usage (${stage}): ${memoryUsage.toFixed(2)} MB`);
       return memoryUsage;
     } else {

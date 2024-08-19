@@ -15,12 +15,12 @@ export class AnimationComponent implements OnInit {
 
   startAnimation(numSquares: number) {
     this.squares = Array(numSquares).fill(0);
-    setTimeout(() => this.runAnimation(1, numSquares), 0); // Ensure DOM is updated before starting animation
+    setTimeout(() => this.runAnimation(1, numSquares), 0);
   }
 
   runAnimation(attemptNumber: number, numSquares: number) {
     const squares = Array.from(document.getElementsByClassName('square'));
-    if (squares.length === 0) return; // Ensure squares are present
+    if (squares.length === 0) return;
 
     const screenWidth = window.innerWidth;
     const speed = 500; // Prędkość przesuwania w pikselach na sekundę
@@ -52,7 +52,7 @@ export class AnimationComponent implements OnInit {
         console.log(`Attempt: ${attemptNumber}. Average frame time: ${averageFrameTime} ms`);
 
         if (attemptNumber < 5) {
-          setTimeout(() => this.runAnimation(attemptNumber + 1, numSquares), 1000); // Delay before next attempt
+          setTimeout(() => this.runAnimation(attemptNumber + 1, numSquares), 1000);
         }
       }
     };
